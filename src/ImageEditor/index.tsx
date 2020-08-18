@@ -81,52 +81,8 @@ export function ImageEditor() {
     }
   })
 
-  // const ratio = width / height
-
-  // useEffectOnce(() => {
-  // instance.loadImageFromURL(
-  //   'https://pbs.twimg.com/media/Efoj1mgVoAIO5U9?format=jpg&name=900x900',
-  //   'file'
-  // )
-  // instance.on('objectAdded', () => console.log('OBJECT ADDED'))
-  // instance.on('objectActivated', data => {
-
-  // })
-  // editorInstance.current = instance
-  // })
-
-  // const handleLoad = async (e: ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files ? e.target.files[0] : null
-
-  //   if (!file) {
-  //     return
-  //   }
-
-  //   await getEditor().loadImageFromFile(file, 'Flower')
-  //   getEditor().clearUndoStack()
-  // }
-
-  const handleCrop = () => {
-    editor!.startDrawingMode('CROPPER')
-    editor!.setCropzoneRect(width / height)
-  }
-
-  // const handleApplyCrop = async () => {
-  //   await getEditor().crop(getEditor().getCropzoneRect())
-  //   getEditor().stopDrawingMode()
-  // }
-
-  // const handleDraw = () => {
-  //   getEditor().startDrawingMode('FREE_DRAWING', {
-  //     width: 4,
-  //     color: 'red'
-  //   })
-  // }
-
   return (
     <div>
-      {/* <input accept="image/*" type="file" onChange={() => {}} /> */}
-
       <Box display="flex" className={classes.root}>
         <div ref={ref} className={classes.container} />
 
