@@ -4,3 +4,14 @@ export interface ObjectActivatedData {
   width: number
   height: number
 }
+
+export type Actions =
+  | 'crop'
+  | 'flip'
+  | 'rotate'
+  | 'mask'
+  | 'draw'
+  | 'text'
+  | 'shape'
+  | 'icon'
+  | 'filter'

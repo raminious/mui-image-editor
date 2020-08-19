@@ -3,8 +3,12 @@ import { IconButton, Tooltip } from '@material-ui/core'
 import Icon from '@mdi/react'
 import { mdiDraw } from '@mdi/js'
 
+import { Actions } from '../../types'
+
 interface Props {
   editor: tuiImageEditor.ImageEditor
+  isActive: boolean
+  onChangeActiveAction: (action: Actions | null) => void
 }
 
 export function Draw({ editor }: Props) {
