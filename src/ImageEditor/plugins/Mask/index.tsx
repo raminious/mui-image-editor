@@ -3,10 +3,10 @@ import { IconButton, Tooltip } from '@material-ui/core'
 import Icon from '@mdi/react'
 import { mdiSquareCircle } from '@mdi/js'
 
-import { Actions } from '../../types'
+import { ImageEditor, Actions } from '../../types'
 
 interface Props {
-  editor: tuiImageEditor.ImageEditor
+  editor: ImageEditor
   isActive: boolean
   onChangeActiveAction: (action: Actions | null) => void
 }

@@ -10,11 +10,11 @@ import {
 import Icon from '@mdi/react'
 import { mdiRotateLeft, mdiRotateRight } from '@mdi/js'
 
-import { Actions } from '../../types'
 import { TextIconButton } from '../../../components/TextIconButton'
+import { ImageEditor, Actions } from '../../types'
 
 interface Props {
-  editor: tuiImageEditor.ImageEditor
+  editor: ImageEditor
   onChangeActiveAction: (action: Actions | null) => void
 }
 
@@ -43,9 +43,9 @@ export function RotateMenu({ editor, onChangeActiveAction }: Props) {
     editor.setAngle(value)
   }
 
-  const handleRotate = (_: React.ChangeEvent<{}>, value: number | number[]) => {
-    setRotateValue(value as number)
-    editor.setAngle(value as number)
+  const handleRotate = (value: number) => {
+    setRotateValue(value)
+    editor.setAngle(value)
   }
 
   return (
@@ -83,7 +83,7 @@ export function RotateMenu({ editor, onChangeActiveAction }: Props) {
           style={{
             margin: theme.spacing(0, 2)
           }}
-          onChange={handleRotate}
+          onChange={(_, value) => handleRotate(value as number)}
         />
         <Typography variant="body2">+360</Typography>
       </Box>

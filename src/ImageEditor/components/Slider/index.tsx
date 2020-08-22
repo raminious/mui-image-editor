@@ -1,31 +1,73 @@
-import { Slider as BaseSlider, withStyles } from '@material-ui/core'
+import React, { ChangeEvent } from 'react'
 
-export const Slider = withStyles({
-  root: {
-    color: '#52af77',
-    height: 8
-  },
-  thumb: {
-    height: 24,
-    width: 24,
-    backgroundColor: '#fff',
-    border: '2px solid currentColor',
-    marginTop: -8,
-    marginLeft: -12,
-    '&:focus, &:hover, &$active': {
-      boxShadow: 'inherit'
-    }
-  },
-  active: {},
-  valueLabel: {
-    left: 'calc(-50% + 4px)'
-  },
-  track: {
-    height: 8,
-    borderRadius: 4
-  },
-  rail: {
-    height: 8,
-    borderRadius: 4
+import {
+  Slider as BaseSlider,
+  Box,
+  Typography,
+  TextField,
+  useTheme,
+  Theme,
+  makeStyles
+} from '@material-ui/core'
+
+const useStyles = makeStyles((theme: Theme) => ({
+  input: {
+    padding: theme.spacing(0.5, 1.5),
+    width: theme.spacing(9),
+    fontSize: theme.spacing(1.75),
+    textAlign: 'center'
   }
-})(BaseSlider)
+}))
+
+interface Props {
+  min: number
+  max: number
+  caption: string
+  value: number
+  onChange: (value: number | null) => void
+}
+
+export function Slider({ min, max, caption, value, onChange }: Props) {
+  const classes = useStyles()
+  const theme = useTheme<Theme>()
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value)
+
+    if (Number.isNaN(value) || value < min || value > max) {
+      onChange(null)
+
+      return
+    }
+
+    onChange(value)
+  }
+
+  return (
+    <Box display="flex" alignItems="center" width="30%">
+      <Typography variant="caption">{caption}</Typography>
+
+      <BaseSlider
+        min={min}
+        max={max}
+        style={{
+          margin: theme.spacing(0, 2)
+        }}
+        value={value}
+        color="secondary"
+        onChange={(_, value) => onChange(value as number)}
+      />
+
+      <TextField
+        value={value}
+        variant="outlined"
+        size="small"
+        inputProps={{
+          className: classes.input,
+          pattern: '[0-9]{1,2}'
+        }}
+        onChange={handleChange}
+      />
+    </Box>
+  )
+}

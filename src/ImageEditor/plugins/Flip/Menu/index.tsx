@@ -3,11 +3,11 @@ import { Box, Divider } from '@material-ui/core'
 import Icon from '@mdi/react'
 import { mdiCancel, mdiFlipHorizontal, mdiFlipVertical } from '@mdi/js'
 
-import { Actions } from '../../types'
 import { TextIconButton } from '../../../components/TextIconButton'
+import { ImageEditor, Actions } from '../../types'
 
 interface Props {
-  editor: tuiImageEditor.ImageEditor
+  editor: ImageEditor
   onChangeActiveAction: (action: Actions | null) => void
 }
 

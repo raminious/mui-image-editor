@@ -1,11 +1,15 @@
 import React, { useState } from 'react'
-import { IconButton, Tooltip } from '@material-ui/core'
+
 import Icon from '@mdi/react'
 import { mdiDeleteOutline } from '@mdi/js'
 import { useEffectOnce } from 'react-use'
 
+import { Button } from '@material-ui/core'
+
+import { ImageEditor } from '../../types'
+
 interface Props {
-  editor: tuiImageEditor.ImageEditor
+  editor: ImageEditor
 }
 
 export function Delete({ editor }: Props) {
@@ -15,27 +19,25 @@ export function Delete({ editor }: Props) {
     editor.on('undoStackChanged', (length: number) =>
       setIsDisabled(length === 0)
     )
+
+    return () => {
+      editor.off('undoStackChanged')
+    }
   })
 
-  const handleDeleteActiveObject = async () => {
-    editor.removeActiveObject()
+  const removeActiveObject = () => {
+    try {
+      editor.removeActiveObject()
+    } catch (e) {}
   }
 
   return (
-    <Tooltip title="Delete">
-      <span>
-        <IconButton
-          size="small"
-          disabled={isDisabled}
-          onClick={handleDeleteActiveObject}
-        >
-          <Icon
-            path={mdiDeleteOutline}
-            size={1}
-            color={isDisabled ? '#ccc' : '#262626'}
-          />
-        </IconButton>
-      </span>
-    </Tooltip>
+    <Button
+      startIcon={<Icon path={mdiDeleteOutline} size={1} />}
+      disabled={isDisabled}
+      onClick={removeActiveObject}
+    >
+      Delete
+    </Button>
   )
 }

@@ -1,13 +1,14 @@
 import React from 'react'
-import { IconButton, Tooltip, useTheme, Theme } from '@material-ui/core'
 import Icon from '@mdi/react'
 import { mdiCrop } from '@mdi/js'
 import { useEffectOnce } from 'react-use'
 
-import { ObjectActivatedData, Actions } from '../../types'
+import { Button } from '@material-ui/core'
+
+import { ImageEditor, ObjectActivatedData, Actions } from '../../types'
 
 interface Props {
-  editor: tuiImageEditor.ImageEditor
+  editor: ImageEditor
   isActive: boolean
   width: number
   height: number
@@ -21,8 +22,6 @@ export function Crop({
   height,
   onChangeActiveAction
 }: Props) {
-  const theme = useTheme<Theme>()
-
   useEffectOnce(() => {
     const onObjectActivated = (data: ObjectActivatedData) => {
       if (
@@ -35,10 +34,19 @@ export function Crop({
 
     editor.on('objectActivated', onObjectActivated)
 
-    return () => {}
+    return () => {
+      editor.off('objectActivated')
+    }
   })
 
-  const startCropping = async () => {
+  const toggleCropping = async () => {
+    if (isActive) {
+      editor.stopDrawingMode()
+      onChangeActiveAction(null)
+
+      return
+    }
+
     editor.startDrawingMode('CROPPER')
     editor.setCropzoneRect(width / height)
 
@@ -46,18 +54,12 @@ export function Crop({
   }
 
   return (
-    <>
-      <Tooltip title="Crop">
-        <span>
-          <IconButton size="small" onClick={startCropping}>
-            <Icon
-              path={mdiCrop}
-              size={1.5}
-              color={isActive ? theme.palette.secondary.main : '#262626'}
-            />
-          </IconButton>
-        </span>
-      </Tooltip>
-    </>
+    <Button
+      startIcon={<Icon path={mdiCrop} size={1} />}
+      color={isActive ? 'secondary' : 'default'}
+      onClick={toggleCropping}
+    >
+      Crop
+    </Button>
   )
 }

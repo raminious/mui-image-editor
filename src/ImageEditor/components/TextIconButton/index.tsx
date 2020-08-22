@@ -6,22 +6,25 @@ interface Props {
   icon: React.ReactNode
   text: string
   style?: React.CSSProperties
+  isActive?: boolean
   onClick: () => void
 }
 
 const useStyles = makeStyles(
   (theme: Theme) => ({
-    root: {
+    root: ({ isActive }: { isActive: boolean }) => ({
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      color: theme.palette.grey['700'],
+      color: isActive
+        ? theme.palette.secondary.main
+        : theme.palette.grey['700'],
       userSelect: 'none',
       '&:hover': {
         cursor: 'pointer',
         color: theme.palette.secondary.main
       }
-    },
+    }),
     text: {
       marginTop: theme.spacing(1)
     }
@@ -29,8 +32,14 @@ const useStyles = makeStyles(
   { name: 'TextIconButton' }
 )
 
-export function TextIconButton({ icon, text, style, onClick }: Props) {
-  const classes = useStyles()
+export function TextIconButton({
+  icon,
+  text,
+  style,
+  isActive = false,
+  onClick
+}: Props) {
+  const classes = useStyles({ isActive })
 
   return (
     <div className={classes.root} style={style} onClick={onClick}>

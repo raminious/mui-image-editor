@@ -1,35 +1,39 @@
 import React, { useState } from 'react'
-import { IconButton, Tooltip } from '@material-ui/core'
+
 import Icon from '@mdi/react'
 import { mdiRedoVariant } from '@mdi/js'
 import { useEffectOnce } from 'react-use'
 
+import { Button } from '@material-ui/core'
+
+import { ImageEditor } from '../../types'
+
 interface Props {
-  editor: tuiImageEditor.ImageEditor
+  editor: ImageEditor
+  onRedo: () => void
 }
 
-export function Redo({ editor }: Props) {
+export function Redo({ editor, onRedo }: Props) {
   const [isDisabled, setIsDisabled] = useState(true)
 
   useEffectOnce(() => {
-    editor.on('redoStackChanged', (length: number) =>
+    editor.on('redoStackChanged', (length: number) => {
       setIsDisabled(length === 0)
-    )
+      onRedo()
+    })
+
+    return () => {
+      editor.off('redoStackChanged')
+    }
   })
 
-  const handleRedo = () => editor.redo()
-
   return (
-    <Tooltip title="Redo">
-      <span>
-        <IconButton size="small" disabled={isDisabled} onClick={handleRedo}>
-          <Icon
-            path={mdiRedoVariant}
-            size={1}
-            color={isDisabled ? '#ccc' : '#262626'}
-          />
-        </IconButton>
-      </span>
-    </Tooltip>
+    <Button
+      startIcon={<Icon path={mdiRedoVariant} size={1} />}
+      disabled={isDisabled}
+      onClick={() => editor.redo()}
+    >
+      Redo
+    </Button>
   )
 }

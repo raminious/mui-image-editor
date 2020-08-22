@@ -1,31 +1,37 @@
 import React from 'react'
-import { IconButton, Tooltip } from '@material-ui/core'
 import Icon from '@mdi/react'
 import { mdiDraw } from '@mdi/js'
 
-import { Actions } from '../../types'
+import { Button } from '@material-ui/core'
+
+import { ImageEditor, Actions } from '../../types'
 
 interface Props {
-  editor: tuiImageEditor.ImageEditor
+  editor: ImageEditor
   isActive: boolean
   onChangeActiveAction: (action: Actions | null) => void
 }
 
-export function Draw({ editor }: Props) {
-  const handleDraw = async () => {
-    editor.startDrawingMode('FREE_DRAWING', {
-      width: 1,
-      color: 'red'
-    })
+export function Draw({ editor, onChangeActiveAction, isActive }: Props) {
+  const toggleDrawing = () => {
+    if (isActive) {
+      editor.stopDrawingMode()
+      onChangeActiveAction(null)
+
+      return
+    }
+
+    editor.startDrawingMode('FREE_DRAWING')
+    onChangeActiveAction('draw')
   }
 
   return (
-    <Tooltip title="Draw">
-      <span>
-        <IconButton size="small" onClick={handleDraw}>
-          <Icon path={mdiDraw} size={1.5} color="#262626" />
-        </IconButton>
-      </span>
-    </Tooltip>
+    <Button
+      startIcon={<Icon path={mdiDraw} size={1} />}
+      color={isActive ? 'secondary' : 'default'}
+      onClick={toggleDrawing}
+    >
+      Draw
+    </Button>
   )
 }

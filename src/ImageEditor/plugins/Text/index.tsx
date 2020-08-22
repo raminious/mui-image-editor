@@ -1,28 +1,38 @@
 import React from 'react'
-import { IconButton, Tooltip } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import Icon from '@mdi/react'
 import { mdiFormatTextbox } from '@mdi/js'
 
-import { Actions } from '../../types'
+import { ImageEditor, Actions } from '../../types'
 
 interface Props {
-  editor: tuiImageEditor.ImageEditor
+  editor: ImageEditor
   isActive: boolean
   onChangeActiveAction: (action: Actions | null) => void
 }
 
-export function Text({ editor }: Props) {
-  const handleCreateText = async () => {
-    editor.startDrawingMode('Text')
+export function Text({ editor, isActive, onChangeActiveAction }: Props) {
+  const toggleCreateText = async () => {
+    if (editor.getDrawingMode() !== 'TEXT') {
+      editor.stopDrawingMode()
+      editor.startDrawingMode('TEXT')
+
+      onChangeActiveAction('text')
+
+      return
+    }
+
+    editor.stopDrawingMode()
+    onChangeActiveAction(null)
   }
 
   return (
-    <Tooltip title="Text">
-      <span>
-        <IconButton size="small" onClick={handleCreateText}>
-          <Icon path={mdiFormatTextbox} size={1.5} color="#262626" />
-        </IconButton>
-      </span>
-    </Tooltip>
+    <Button
+      startIcon={<Icon path={mdiFormatTextbox} size={1} />}
+      color={isActive ? 'secondary' : 'default'}
+      onClick={toggleCreateText}
+    >
+      Add Text
+    </Button>
   )
 }
